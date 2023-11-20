@@ -1,95 +1,57 @@
 <?php
 
-include "header.php";
-
-require_once 'config.php';
-require_once 'db_functions/index.php';
-
-echo 'coucou';
+require 'templates/header.php';
 
 ?>
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  </head>
-  <body>
+<?php
+//$dbh = new PDO('mysql:host=localhost;dbname=donkeyMovies', 'root', '');
+
+$sth = $pdo->query('SELECT idmovie, movie_poster, movie_name, director FROM movie');
+// fetch all rows into array, by default PDO::FETCH_BOTH is used
+$rows = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+//var_dump($rows);
+
+?>
+
+
+
+<?php
+//echo '<pre>',
+//var_dump($rows);
+?>
+
+
+<div class="container-xl">
+<br><br><h1>A l'affiche</h1>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+    <?php
+    foreach($rows as $row){
+
+    ?>
+        <div class="col">
+            <div class="card mb-3">
+            <?php echo '<img src="data:image/jpeg;base64,'.base64_encode($row['movie_poster']).'" class="card-img-top" alt="..." />'; ?>
+            <div class="card-body">
+                <h5 class="card-title"><?php echo $row['movie_name'] ?></h5>
+                <p class="card-text"><?php echo $row['director'] ?></p>
+                <button type="button" class="btn btn-dark" onclick="window.location.href='/movie2.php?idmovie=<?php echo $row['idmovie'] ?>';">Réserver</button>
+            </div>
+            </div>
+        </div>
+        <?php
+            }
+        ?>
+    </div>
+</div>
+
     
-<div class="ui link cards">
-  <div class="card">
-    <div class="image">
-      <img src="/Images/flo.jpg">
-    </div>
-    <div class="content">
-      <div class="header">Matt Giampietro</div>
-      <div class="meta">
-        <a>Friends</a>
-      </div>
-      <div class="description">
-        Matthew is an interior designer living in New York.
-      </div>
-    </div>
-    <div class="extra content">
-      <span class="right floated">
-        Joined in 2013
-      </span>
-      <span>
-        <i class="user icon"></i>
-        75 Friends
-      </span>
-    </div>
-  </div>
-  <div class="card">
-    <div class="image">
-      <img src="/images/avatar2/large/molly.png">
-    </div>
-    <div class="content">
-      <div class="header">Molly</div>
-      <div class="meta">
-        <span class="date">Coworker</span>
-      </div>
-      <div class="description">
-        Molly is a personal assistant living in Paris.
-      </div>
-    </div>
-    <div class="extra content">
-      <span class="right floated">
-        Joined in 2011
-      </span>
-      <span>
-        <i class="user icon"></i>
-        35 Friends
-      </span>
-    </div>
-  </div>
-  <div class="card">
-    <div class="image">
-      <img src="/images/avatar2/large/elyse.png">
-    </div>
-    <div class="content">
-      <div class="header">Elyse</div>
-      <div class="meta">
-        <a>Coworker</a>
-      </div>
-      <div class="description">
-        Elyse is a copywriter working in New York.
-      </div>
-    </div>
-    <div class="extra content">
-      <span class="right floated">
-        Joined in 2014
-      </span>
-      <span>
-        <i class="user icon"></i>
-        151 Friends
-      </span>
-    </div>
-  </div>
-</div>
-</div>
-  </body>
-</html>
+
+<?php
+
+require 'templates/footer.php';
+
+?>
+
+
